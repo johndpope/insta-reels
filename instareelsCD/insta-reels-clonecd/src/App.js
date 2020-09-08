@@ -1,8 +1,23 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import './App.css';
 import VideoCard from './VideoCard';
+import {db} from './firebase';
+log
 
 function App() {
+  const [reels, setReels]= useState([]);
+
+  useEffect(() =>{
+
+    db.collection('reels').onSnapshot(snapshot => (
+      setReels(snapshot.docs.map(docs=> docs.data()))
+
+    ))
+
+  }, [])
+
+
+
   return (
     <div className="app">
      
@@ -20,30 +35,20 @@ function App() {
       </div>
 
       <div className="app__videos">
+        {reels.map(({channel , avatarSrc,song,url,likes,shares}) => (
         <VideoCard
-          channel='Kartik'
-          avatarSrc='https://upload.wikimedia.org/wikipedia/commons/thumb/d/dc/Adolf_Hitler_cropped_restored.jpg/1200px-Adolf_Hitler_cropped_restored.jpg'
-          song='--Raabta--'
-          url='https://instagram.flhr3-2.fna.fbcdn.net/v/t50.2886-16/117598442_205338364335864_545695080903278566_n.mp4?_nc_ht=instagram.flhr3-2.fna.fbcdn.net&_nc_cat=100&_nc_ohc=vjDPPklLnOYAX-xOjlv&oe=5F38FACF&oh=fbe19a529394ac8cc1a61f1b2016e54'
-          likes={920}
+          channel={channel}
+          avatarSrc={avatarSrc}
+          song={song}
+          url={url}
+          likes={likes}
       
-          shares={88}
-        />
-        <VideoCard
-        channel = "Sarthak"
-        avatarSrc='https://upload.wikimedia.org/wikipedia/commons/0/09/Joanne_Woodward_-_1957_-_Three_Faces_of_Eve_movie_poster.jpg'
-        song='Rola pay Gayaaaa'
+          shares={shares}
+        />))}
         
-        />
-        <VideoCard/> 
-        <VideoCard/> 
+        
         <VideoCard/> 
         
-    
-        {/* Videos */}
-        {/* Videos */}
-        {/* Videos */}
-        {/* Videos */}
       </div>
     </div>
   );
